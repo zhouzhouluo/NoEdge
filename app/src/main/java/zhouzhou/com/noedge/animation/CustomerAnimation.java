@@ -1,10 +1,10 @@
-package zhouzhou.com.noedge.util;
+package zhouzhou.com.noedge.animation;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 public class CustomerAnimation extends Animation {
-    private int mWaveTimes=1;//摇摆次数
+    private int mWaveTimes=10;//摇摆次数
     private int mWaveRange=50;//摇摆幅度
 
     public CustomerAnimation(){

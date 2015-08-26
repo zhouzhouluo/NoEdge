@@ -2,7 +2,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00c6ff">
+    android:background="#00c6ff"
+    android:id="@+id/root">
 
     <zhouzhou.com.noedge.view.RoundImageView
         android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_above="@+id/appName_TextView"
         android:visibility="gone"/>
-    <ImageView
+    <zhouzhou.com.noedge.view.MoveImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/appImageView"

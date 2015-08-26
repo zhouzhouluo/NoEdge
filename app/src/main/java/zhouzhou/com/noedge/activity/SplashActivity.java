@@ -8,23 +8,35 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import zhouzhou.com.noedge.R;
-import zhouzhou.com.noedge.util.CustomerAnimation;
-import zhouzhou.com.noedge.util.Rotate3dAnimation;
-import zhouzhou.com.noedge.util.ViewAnimation;
+import zhouzhou.com.noedge.animation.CustomerAnimation;
+import zhouzhou.com.noedge.animation.PostScaleAnimation;
+import zhouzhou.com.noedge.animation.ViewAnimation;
 import zhouzhou.com.noedge.view.FlipImgEffectView;
+import zhouzhou.com.noedge.view.MoveImageView;
 import zhouzhou.com.noedge.view.RoundImageView;
 
 public class SplashActivity extends Activity {
+    private ViewGroup _root;
     private TextView appName_TextView;
     private RoundImageView roundImageView;
+    private int _xDelta;
+    private int _yDelta;
     private static class MyHandler extends Handler {
         WeakReference<SplashActivity> mActivity;
         MyHandler(SplashActivity activity) {
@@ -57,16 +69,37 @@ public class SplashActivity extends Activity {
 //        FlipImgEffectView myView = new FlipImgEffectView(this);
 //        setContentView(myView);
         setContentView(R.layout.activity_splash);
+        _root = (ViewGroup) findViewById(R.id.root);
         appName_TextView = (TextView)findViewById(R.id.appName_TextView);
-        ImageView appimageview = (ImageView)findViewById(R.id.appImageView);
+        MoveImageView appimageview = (MoveImageView)findViewById(R.id.appImageView);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setDuration(3000);
+        TranslateAnimation translateAnimation = new TranslateAnimation(-500f,0f,0f,0);
+        translateAnimation.setStartOffset(1000);
+        animationSet.addAnimation(translateAnimation);
+//        AlphaAnimation alphaAnimation = new AlphaAnimation(0f,1.0f);
+//        alphaAnimation.setRepeatMode(Animation.REVERSE);
+//        animationSet.addAnimation(alphaAnimation);
+//        PostScaleAnimation postScaleAnimation = new PostScaleAnimation(-500f,0,-1,-1);
+//        postScaleAnimation.setStartOffset(1000);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0,1,0,1,Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setStartOffset(1000);
+        animationSet.addAnimation(scaleAnimation);
+        appimageview.startAnimation(animationSet);
         CustomerAnimation customerAnimation = new CustomerAnimation();
         customerAnimation.setRepeatCount(-1);
-        customerAnimation.setDuration(3000);
-        appimageview.startAnimation(customerAnimation);
-//        RotateAnimation rotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);//19.7 152
-//        rotateAnimation.setFillAfter(true);
+//        customerAnimation.setDuration(3000);
+//        animationSet.addAnimation(customerAnimation);
+        ViewAnimation viewAnimation = new ViewAnimation();
+        viewAnimation.setRepeatCount(-1);
+//        animationSet.addAnimation(viewAnimation);
+//        appimageview.startAnimation(customerAnimation);
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);//19.7 152
+        rotateAnimation.setFillAfter(true);
 //        rotateAnimation.setDuration(2000);
-//        rotateAnimation.setRepeatCount(-1);
+        rotateAnimation.setRepeatCount(-1);
+//        animationSet.addAnimation(rotateAnimation);
+//        appimageview.startAnimation(animationSet);
 //        appimageview.startAnimation(rotateAnimation);
         float centerX = appimageview.getWidth() / 2f;
         float centerY = appimageview.getHeight() / 2f;
@@ -118,5 +151,51 @@ public class SplashActivity extends Activity {
 //                }
 //            }
 //        }).start();
+        appimageview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int X = (int)event.getRawX();
+                final int Y = (int)event.getRawY();
+//                String mytag = v.getTag().toString();
+//                Log.d("zzz","mytag:"+mytag);
+//                Log.d("zzz","");
+                Log.d("zzz","X:"+X);
+                Log.d("zzz","Y:"+Y);
+//                switch (event.getAction()&MotionEvent.ACTION_MASK){
+//                    case MotionEvent.ACTION_DOWN:
+//                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v
+//                                .getLayoutParams();
+//                        _xDelta = X - lParams.leftMargin;
+//                        _yDelta = Y - lParams.topMargin;
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        break;
+//                    case MotionEvent.ACTION_POINTER_DOWN:
+//                        break;
+//                    case MotionEvent.ACTION_POINTER_UP:
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v
+//                                .getLayoutParams();
+//                        layoutParams.leftMargin = X - _xDelta;
+//                        layoutParams.topMargin = Y - _yDelta;
+//                        layoutParams.rightMargin = -250;
+//                        layoutParams.bottomMargin = -250;
+//                        v.setLayoutParams(layoutParams);
+//                        break;
+//                }
+//                _root.invalidate();
+                ((MoveImageView)v).autoMouse(event);
+                return false;
+            }
+        });
     }
+//    private void moveViewWithFinger(View view, float rawX, float rawY) {
+//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view
+//                .getLayoutParams();
+//        params.leftMargin = (int) rawX - ivMove.getWidth() / 2;
+//        params.topMargin = (int) rawY - topTitleHeight - ivMove.getHeight() / 2;
+//        view.setLayoutParams(params);
+//    }
+
 }

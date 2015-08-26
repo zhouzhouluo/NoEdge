@@ -1,4 +1,4 @@
-package zhouzhou.com.noedge.util;
+package zhouzhou.com.noedge.animation;
 
 import android.graphics.Camera;
 import android.graphics.Matrix;
@@ -40,7 +40,7 @@ public class ViewAnimation extends Animation {
            float degrees = fromDegrees + ((359 - fromDegrees) * interpolatedTime);
            System.out.println("interpolatedTime:" + interpolatedTime);
 //           mCamera.translate(0.0f, 0.0f, 0 * interpolatedTime);
-           mCamera.translate(0.0f, 0.0f, 310 * (1.0f - interpolatedTime));
+//           mCamera.translate(0.0f, 0.0f, 310 * (1.0f - interpolatedTime));
            mCamera.save();
            mCamera.translate(0.0f, 0f,0f);
            mCamera.rotateY(degrees);
