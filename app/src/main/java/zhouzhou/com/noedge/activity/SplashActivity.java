@@ -34,6 +34,7 @@ import zhouzhou.com.noedge.view.RoundImageView;
 public class SplashActivity extends Activity {
     private ViewGroup _root;
     private TextView appName_TextView;
+    private MoveImageView appimageview;
     private RoundImageView roundImageView;
     private int _xDelta;
     private int _yDelta;
@@ -63,6 +64,17 @@ public class SplashActivity extends Activity {
 
     MyHandler myHandler = new MyHandler(this);
 
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            appName_TextView.setText("ppppppp");
+            appimageview.setImageResource(R.mipmap.ic_launcher);
+        }
+    };
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +83,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         _root = (ViewGroup) findViewById(R.id.root);
         appName_TextView = (TextView)findViewById(R.id.appName_TextView);
-        MoveImageView appimageview = (MoveImageView)findViewById(R.id.appImageView);
+        appimageview = (MoveImageView)findViewById(R.id.appImageView);
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.setDuration(3000);
         TranslateAnimation translateAnimation = new TranslateAnimation(-500f,0f,0f,0);
@@ -139,18 +151,25 @@ public class SplashActivity extends Activity {
         animSet.play(rotate).with(fadeInOut).after(moveIn);
         animSet.setDuration(5000);
         animSet.start();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
 //                    Thread.sleep(10000);
 //                    Message msg = myHandler.obtainMessage(1);
 //                    myHandler.sendMessage(msg);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            appName_TextView.setText("ppppppp");
+//                            appimageview.setImageResource(R.mipmap.ic_launcher);
+//                        }
+//                    },10000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         appimageview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
